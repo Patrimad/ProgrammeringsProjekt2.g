@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
@@ -9,12 +9,13 @@ public class PlayerController : MonoBehaviour
 
     private InputSystem_Actions inputSystemActions;
     private Vector3 _input;
-    private CharacterController _characterController;
+    private Rigidbody rb;
 
     private void Awake()
     {
         inputSystemActions = new InputSystem_Actions();
-        _characterController = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
 
     private void OnEnable()
@@ -30,32 +31,39 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         GatherInput();
-        Look();
+    }
+
+    private void FixedUpdate()
+    {
         Move();
+        Look();
     }
 
     private void GatherInput()
     {
-        Vector2 input = inputSystemActions.Player.Move.ReadValue<Vector2>();
+        Vector2 input = inputSystemActions.Player.Move.ReadValue<Vector2>().normalized;
         _input = new Vector3(input.x, 0, input.y);
     }
 
     private void Look()
     {
         if (_input == Vector3.zero) return;
-
-        // Apply 45° isometric rotation to movement input
+        
         Matrix4x4 isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
         Vector3 rotatedInput = isoMatrix.MultiplyPoint3x4(_input);
 
-        // Instantly face the direction
         Quaternion targetRotation = Quaternion.LookRotation(rotatedInput, Vector3.up);
-        transform.rotation = targetRotation;
+        rb.MoveRotation(Quaternion.RotateTowards(rb.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime));
     }
 
     private void Move()
     {
-        Vector3 moveDirection = transform.forward * _input.magnitude * moveSpeed * Time.deltaTime;
-        _characterController.Move(moveDirection);
+        if (_input == Vector3.zero) return;
+        
+        Matrix4x4 isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
+        Vector3 rotatedInput = isoMatrix.MultiplyPoint3x4(_input);
+
+        Vector3 moveDirection = rotatedInput * moveSpeed * Time.fixedDeltaTime;
+        rb.MovePosition(rb.position + moveDirection);
     }
 }
