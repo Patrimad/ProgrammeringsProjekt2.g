@@ -26,7 +26,7 @@ public class Weapons : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Attack();
+            //Attack();
         }
 
     }
