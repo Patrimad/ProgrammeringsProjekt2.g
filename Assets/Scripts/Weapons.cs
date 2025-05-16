@@ -1,4 +1,4 @@
-using System.Security.Cryptography.X509Certificates;
+/*using System.Security.Cryptography.X509Certificates;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,8 +7,8 @@ public class Weapons : MonoBehaviour
 {
     public int WeaponsUnlocked = 1;
 
-    // pseudo kode for weapon systemet: Der skal laves en switch for hvert eneste case, med hvilke våben der er unlocked.
-    // der skal også laves en attack funktion.
+    // pseudo kode for weapon systemet: Der skal laves en switch for hvert eneste case, med hvilke vï¿½ben der er unlocked.
+    // der skal ogsï¿½ laves en attack funktion.
 
     // Update is called once per frame
     void Update()
@@ -68,4 +68,4 @@ class MetalPipe : Weapon
     {
 
     }
-}
+}*/

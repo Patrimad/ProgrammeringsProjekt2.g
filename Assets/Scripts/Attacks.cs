@@ -2,6 +2,41 @@ using UnityEngine;
 
 public class Attacks : MonoBehaviour
 {
+    public GameObject knifePrefab;
+    public GameObject circlePrefab;
+
+    private GameObject activeKnife;
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Attack attack = new SpikeHand(knifePrefab, transform, this);
+            attack.UseAttack();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Attack attack = new Spikes(circlePrefab, transform);
+            attack.UseAttack();
+        }
+
+        // Keep knife locked to player
+        if (activeKnife != null)
+        {
+            activeKnife.transform.position = transform.position;
+            activeKnife.transform.rotation = transform.rotation;
+        }
+    }
+
+    public void SetActiveKnife(GameObject knife)
+    {
+        if (activeKnife != null)
+        {
+            Destroy(activeKnife);
+        }
+        activeKnife = knife;
+    }
+
     public abstract class Attack
     {
         protected int damage;
@@ -16,7 +51,6 @@ public class Attacks : MonoBehaviour
         }
     }
 
-    // Derived melee class
     public class Melee : Attack
     {
         public override void UseAttack()
@@ -26,17 +60,28 @@ public class Attacks : MonoBehaviour
         }
     }
 
-    // Specific melee attack
     public class SpikeHand : Melee
     {
+        private GameObject knifePrefab;
+        private Transform playerTransform;
+        private Attacks attackController;
+
+        public SpikeHand(GameObject prefab, Transform transform, Attacks controller)
+        {
+            knifePrefab = prefab;
+            playerTransform = transform;
+            attackController = controller;
+        }
+
         public override void UseAttack()
         {
-            Debug.Log("Using spike hand attack!");
+            Debug.Log("Spawning knife locked to player.");
+            GameObject knife = Object.Instantiate(knifePrefab, playerTransform.position, playerTransform.rotation);
+            attackController.SetActiveKnife(knife);
             base.UseAttack();
         }
     }
 
-    // Derived ranged class
     public class Ranged : Attack
     {
         public override void UseAttack()
@@ -46,23 +91,27 @@ public class Attacks : MonoBehaviour
         }
     }
 
-    // Specific ranged attack
     public class Spikes : Ranged
     {
+        private GameObject circlePrefab;
+        private Transform playerTransform;
+
+        public Spikes(GameObject prefab, Transform transform)
+        {
+            circlePrefab = prefab;
+            playerTransform = transform;
+        }
+
         public override void UseAttack()
         {
-            Debug.Log("Firing spikes!");
+            Debug.Log("Spawning circle at player position.");
+            Object.Instantiate(circlePrefab, playerTransform.position, Quaternion.identity);
+
+            // Simulate damage
+            Debug.Log("All characters would lose a life here.");
+            // Example: foreach (var enemy in FindObjectsOfType<Enemy>()) enemy.TakeDamage(damage);
+
             base.UseAttack();
         }
-    }
-
-    // Example usage in Unity
-    private void Start()
-    {
-        Attack attack = new SpikeHand();
-        attack.UseAttack();
-
-        attack = new Spikes();
-        attack.UseAttack();
     }
 }
