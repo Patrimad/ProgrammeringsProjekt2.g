@@ -1,21 +1,9 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
-    public int maxHealth = 100;
-    public int currentHealth;
-    public TextMeshProUGUI healthText;
-    
-    public int maxBlood = 100;
-    public int currentBlood;
-    public TextMeshProUGUI bloodText;
-
-    public BarScript healthBar;
-    public BarScript bloodBar;
-
     public float moveSpeed = 5f;
     public float dashSpeed = 20f;
     public float dashDuration = 0.2f;
@@ -30,44 +18,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 _input;
     private Rigidbody rb;
 
-    void Start()
-    {
-        currentHealth = maxHealth;
-        currentBlood = maxBlood;
-        healthText.text = $"{currentHealth}/{maxHealth}";
-        healthBar.SetMaxhealth(maxHealth);
-        bloodBar.SetMaxhealth(maxBlood);
-        bloodText.text = $"{currentBlood}/{maxBlood}";
-    }
-
-    public void TakeDamage(int damage)
-    {
-        currentHealth -= damage;
-        healthBar.SetHealth(currentHealth);
-        healthText.text = $"{currentHealth}/{maxHealth}";
-    }
-
-    public void GiveHealth(int amount)
-    {
-        currentHealth += amount;
-        healthBar.SetHealth(currentHealth);
-        healthText.text = $"{currentHealth}/{maxHealth}";
-    }
-    public void GiveBlood(int amount)
-    {
-        currentBlood += amount;
-        bloodBar.SetMaxhealth(currentBlood);
-        bloodText.text = $"{currentBlood}/{maxBlood}";
-    }
-
-    public void TakeBlood(int amount)
-    {
-        currentBlood -= amount;
-        bloodBar.SetMaxhealth(currentBlood);
-        bloodText.text = $"{currentBlood}/{maxBlood}";
-    }
-
-
+    public Health_Stam stats;
 
     private void Awake()
     {
@@ -102,15 +53,13 @@ public class PlayerController : MonoBehaviour
         if (Keyboard.current.leftShiftKey.wasPressedThisFrame &&
             Time.time >= lastDashTime + dashCooldown &&
             _input != Vector3.zero &&
-            currentBlood >= dashBloodCost)
+            stats.currentBlood >= dashBloodCost)
         {
             isDashing = true;
             dashTimeRemaining = dashDuration;
             lastDashTime = Time.time;
-            dashDirection = _input.normalized; // Lock direction
-            currentBlood -= dashBloodCost;
-            bloodBar.SetHealth(currentBlood);
-            bloodText.text = $"{currentBlood}/{maxBlood}";
+            dashDirection = _input.normalized;
+            stats.TakeBlood(dashBloodCost);
         }
     }
 
