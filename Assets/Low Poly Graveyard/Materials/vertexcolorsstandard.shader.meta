@@ -1,7 +1,9 @@
 fileFormatVersion: 2
-guid: 99c9720ab356a0642a771bea13969a05
-DefaultImporter:
+guid: 7cb4eaaf2bdb79b4cadcaf3a713acfa2
+ShaderImporter:
   externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -10,5 +12,5 @@ AssetOrigin:
   productId: 134110
   packageName: Low Poly Graveyard
   packageVersion: 1.0
-  assetPath: Assets/Scenes/SampleScene.unity
+  assetPath: Assets/Low Poly Graveyard/Materials/vertexcolorsstandard.shader
   uploadId: 309139

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 99c9720ab356a0642a771bea13969a05
-DefaultImporter:
+guid: 78b7519a3bb8a894a8e3b287f50af51c
+PrefabImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
@@ -10,5 +10,5 @@ AssetOrigin:
   productId: 134110
   packageName: Low Poly Graveyard
   packageVersion: 1.0
-  assetPath: Assets/Scenes/SampleScene.unity
+  assetPath: Assets/Low Poly Graveyard/Prefabs/DemoScene_prefab.prefab
   uploadId: 309139
