@@ -30,6 +30,10 @@ public class Health_Stam : MonoBehaviour
         currentHealth = Mathf.Max(0, currentHealth - damage);
         UpdateHealthUI();
         healthBar.SetHealth(currentHealth);
+
+        //variable der henter spillerens healthkode og får enemy til at skade efter lidt delay
+        
+
     }
 
     public void GiveHealth(int amount)
