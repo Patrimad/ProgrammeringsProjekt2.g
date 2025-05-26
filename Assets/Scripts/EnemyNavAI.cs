@@ -7,6 +7,7 @@ public class EnemyNavAI : MonoBehaviour
     public float detectionRadius = 10f; // Radius for at opdage spilleren
     public float chaseSpeed = 5f;
     public float patrolSpeed = 2f;
+    public float stopDistance = 1.5f;
 
     private NavMeshAgent agent;
     private int currentPatrolIndex;
@@ -32,7 +33,15 @@ public class EnemyNavAI : MonoBehaviour
             // Spilleren er indenfor radius, så start jagten.
             chasingPlayer = true;
             agent.speed = chaseSpeed;
-            agent.SetDestination(player.position);
+            Vector3 directionToPlayer = player.position - transform.position;
+            if (directionToPlayer.magnitude > stopDistance)
+            {
+                agent.SetDestination(player.position);
+            }
+            else
+            {
+                agent.ResetPath(); // Stop bevægelsen, når vi er tæt nok på
+            }
         }
         else
         {
