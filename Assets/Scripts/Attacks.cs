@@ -26,8 +26,7 @@ public class Attacks : MonoBehaviour
             attack.UseAttack();
             stats.TakeBlood(attack2Cost);
         }
-
-        // Keep knife locked to player
+        
         if (activeKnife != null)
         {
             activeKnife.transform.position = transform.position;
@@ -111,13 +110,7 @@ public class Attacks : MonoBehaviour
 
         public override void UseAttack()
         {
-            Debug.Log("Spawning circle at player position.");
             Object.Instantiate(circlePrefab, playerTransform.position, Quaternion.identity);
-
-            // Simulate damage
-            Debug.Log("All characters would lose a life here.");
-            // Example: foreach (var enemy in FindObjectsOfType<Enemy>()) enemy.TakeDamage(damage);
-
             base.UseAttack();
         }
     }
