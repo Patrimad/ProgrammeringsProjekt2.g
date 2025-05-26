@@ -6,6 +6,11 @@ public class Attacks : MonoBehaviour
     public GameObject circlePrefab;
 
     private GameObject activeKnife;
+    
+    public Health_Stam stats;
+
+    public int attack1Cost = 5;
+    public int attack2Cost = 10;
 
     void Update()
     {
@@ -13,11 +18,13 @@ public class Attacks : MonoBehaviour
         {
             Attack attack = new SpikeHand(knifePrefab, transform, this);
             attack.UseAttack();
+            stats.TakeBlood(attack1Cost);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             Attack attack = new Spikes(circlePrefab, transform);
             attack.UseAttack();
+            stats.TakeBlood(attack2Cost);
         }
 
         // Keep knife locked to player

@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-public class Health_Stam : MonoBehaviour
+public class Health_Stam : MonoBehaviour, IDamage
 {
     public int maxHealth = 100;
     public int currentHealth;
@@ -31,7 +31,7 @@ public class Health_Stam : MonoBehaviour
         UpdateHealthUI();
         healthBar.SetHealth(currentHealth);
 
-        //variable der henter spillerens healthkode og får enemy til at skade efter lidt delay
+        //variable der henter spillerens healthkode og fï¿½r enemy til at skade efter lidt delay
         
 
     }
@@ -59,6 +59,10 @@ public class Health_Stam : MonoBehaviour
 
     private void UpdateHealthUI()
     {
+        if (healthText == null)
+        {
+            return;
+        }
         healthText.text = $"{currentHealth}/{maxHealth}";
     }
 
