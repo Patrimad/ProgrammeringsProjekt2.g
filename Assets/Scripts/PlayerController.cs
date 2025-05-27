@@ -14,11 +14,14 @@ public class PlayerController : MonoBehaviour
     private float dashTimeRemaining;
     private bool isDashing;
     private Vector3 dashDirection;
+    public float rotationSpeed = 10f;
 
     private Vector3 _input;
     private Rigidbody rb;
 
     public Health_Stam stats;
+    
+    private bool isControlHeld;
 
     private void Awake()
     {
@@ -40,20 +43,24 @@ public class PlayerController : MonoBehaviour
 
     private void GatherInput()
     {
+        // Check movement input
         Vector2 input = Keyboard.current != null ? new Vector2(
             (Keyboard.current.dKey.isPressed ? 1 : 0) - (Keyboard.current.aKey.isPressed ? 1 : 0),
             (Keyboard.current.wKey.isPressed ? 1 : 0) - (Keyboard.current.sKey.isPressed ? 1 : 0)
         ).normalized : Vector2.zero;
 
         _input = new Vector3(input.x, 0, input.y);
+        
+        isControlHeld = Keyboard.current != null && Keyboard.current.leftShiftKey.isPressed;
     }
 
     private void TryDash()
     {
-        if (Keyboard.current.leftShiftKey.wasPressedThisFrame &&
+        if (Keyboard.current.spaceKey.wasPressedThisFrame &&
             Time.time >= lastDashTime + dashCooldown &&
             _input != Vector3.zero &&
-            stats.currentBlood >= dashBloodCost)
+            stats.currentBlood >= dashBloodCost &&
+            !isControlHeld)
         {
             isDashing = true;
             dashTimeRemaining = dashDuration;
@@ -65,6 +72,7 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
+        if (isControlHeld) return;
         if (_input == Vector3.zero && !isDashing) return;
 
         Matrix4x4 isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
@@ -91,8 +99,9 @@ public class PlayerController : MonoBehaviour
         Matrix4x4 isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
         Vector3 rotatedInput = isoMatrix.MultiplyPoint3x4(_input);
         Quaternion targetRotation = Quaternion.LookRotation(rotatedInput, Vector3.up);
-        rb.rotation = targetRotation;
+        rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
     }
+
 
     private void OnCollisionEnter(Collision collision)
     {

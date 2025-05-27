@@ -22,7 +22,7 @@ public class EnemyNavAI : MonoBehaviour
         if (patrolPoints.Length > 0)
         {
             agent.speed = patrolSpeed;
-            agent.destination = patrolPoints[0].position;
+            agent.SetDestination(patrolPoints[0].position);
         }
     }
 
@@ -64,7 +64,7 @@ public class EnemyNavAI : MonoBehaviour
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
             currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
-            agent.destination = patrolPoints[currentPatrolIndex].position;
+            agent.SetDestination(patrolPoints[currentPatrolIndex].position);
         }
     }
 
