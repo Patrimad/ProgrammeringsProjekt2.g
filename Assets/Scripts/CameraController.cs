@@ -13,6 +13,7 @@ public class CameraController : MonoBehaviour
 
     private Vector3 _velocity;
     private float _zoomSpeed;
+    private bool hasMultiplePlayers;
 
     private void Awake()
     {
@@ -21,14 +22,24 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        transform.position = GetAveragePosition();
-        _mainCamera.orthographicSize = GetDesiredSize();
+        hasMultiplePlayers = targets.Count > 1;
+
+        if (targets.Count > 0)
+        {
+            transform.position = GetAveragePosition();
+            _mainCamera.orthographicSize = GetDesiredSize();
+        }
     }
 
     private void LateUpdate()
     {
-        SetPosition();
-        SetSize();
+        hasMultiplePlayers = targets.Count > 1;
+
+        if (targets.Count > 0)
+        {
+            SetPosition();
+            SetSize();
+        }
     }
 
     private void SetPosition()
@@ -42,12 +53,14 @@ public class CameraController : MonoBehaviour
             _mainCamera.orthographicSize,
             GetDesiredSize(),
             ref _zoomSpeed,
-            SmoothTime
-        );
+            SmoothTime);
     }
 
     private Vector3 GetAveragePosition()
     {
+        if (targets.Count == 0)
+            return transform.position;
+
         Vector3 averagePosition = Vector3.zero;
 
         foreach (var target in targets)
@@ -55,17 +68,21 @@ public class CameraController : MonoBehaviour
             averagePosition += target.position;
         }
 
-        if (targets.Count > 0)
-            averagePosition /= targets.Count;
-
-        averagePosition.y = transform.position.y;
-        averagePosition.z = transform.position.z;
+        averagePosition /= targets.Count;
+        //averagePosition.y = transform.position.y;
+        //averagePosition.z = transform.position.z;
 
         return averagePosition;
     }
 
     private float GetDesiredSize()
     {
+        if (targets.Count == 0)
+            return MinSize;
+
+        if (targets.Count == 1)
+            return MinSize;
+
         float size = 0f;
         Vector3 desiredLocalPos = transform.InverseTransformPoint(GetAveragePosition());
 

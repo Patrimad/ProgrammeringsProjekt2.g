@@ -3,17 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-<<<<<<< HEAD
-  tags:
-  - Enemy
-=======
   tags: []
->>>>>>> df7b8b7abd77c2435052c7ed03743c5018403b98
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - Enemy
