@@ -14,6 +14,8 @@ public class Health_Stam : MonoBehaviour, IDamage
 
     public BarScript healthBar;
     public BarScript bloodBar;
+    
+    public GameObject OrbPrefab;
 
     void Start()
     {
@@ -23,6 +25,15 @@ public class Health_Stam : MonoBehaviour, IDamage
         UpdateBloodUI();
         healthBar.SetMaxhealth(maxHealth);
         bloodBar.SetMaxhealth(maxBlood);
+    }
+
+    void Update()
+    {
+        if (currentHealth <= 0)
+        {
+            Instantiate(OrbPrefab, gameObject.transform.position,  Quaternion.identity);
+            Destroy(gameObject);
+        }
     }
 
     public void TakeDamage(int damage)

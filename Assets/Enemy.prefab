@@ -400,9 +400,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70e7423e37181a743b059c3742472131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
+  patrolPoints: []
   detectionRadius: 10
   chaseSpeed: 5
   patrolSpeed: 2
@@ -427,6 +425,7 @@ MonoBehaviour:
   bloodText: {fileID: 0}
   healthBar: {fileID: 2515791241311473352}
   bloodBar: {fileID: 0}
+  OrbPrefab: {fileID: 1632358780713932119, guid: 5991bf94fa87203acbb842410805059c, type: 3}
 --- !u!1001 &5854987254053715250
 PrefabInstance:
   m_ObjectHideFlags: 0
