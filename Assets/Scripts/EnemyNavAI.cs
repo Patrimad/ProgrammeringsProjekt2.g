@@ -12,7 +12,7 @@ public class EnemyNavAI : MonoBehaviour
     private NavMeshAgent agent;
     private int currentPatrolIndex;
     private Transform player;
-    private bool chasingPlayer = false;
+    private bool chasingPlayer = true;
 
     void Start()
     {
