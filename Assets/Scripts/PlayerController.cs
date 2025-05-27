@@ -43,7 +43,6 @@ public class PlayerController : MonoBehaviour
 
     private void GatherInput()
     {
-        // Check movement input
         Vector2 input = Keyboard.current != null ? new Vector2(
             (Keyboard.current.dKey.isPressed ? 1 : 0) - (Keyboard.current.aKey.isPressed ? 1 : 0),
             (Keyboard.current.wKey.isPressed ? 1 : 0) - (Keyboard.current.sKey.isPressed ? 1 : 0)

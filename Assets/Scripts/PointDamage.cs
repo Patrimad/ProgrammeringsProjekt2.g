@@ -6,7 +6,7 @@ public class PointDamage : MonoBehaviour
     public LayerMask enemyLayers;
     public float lifeTime = 2f;
     public float radius = 3f;
-    public float angle = 45f; // degrees
+    public float angle = 45f;
 
     void Start()
     {
@@ -34,8 +34,7 @@ public class PointDamage : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, radius);
-
-        // Optional: visualize the 45-degree arc in the scene
+        
         Vector3 forward = transform.forward * radius;
         Vector3 leftBoundary = Quaternion.Euler(0, -angle / 2f, 0) * forward;
         Vector3 rightBoundary = Quaternion.Euler(0, angle / 2f, 0) * forward;

@@ -401,7 +401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPoints: []
-  detectionRadius: 10
+  detectionRadius: 100
   chaseSpeed: 5
   patrolSpeed: 2
   stopDistance: 1.5
