@@ -1568,10 +1568,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 354043572974720080, guid: c10056c524c166c42a3d282572278a1b, type: 3}
-      propertyPath: cam
-      value: 
-      objectReference: {fileID: 330585546}
     - target: {fileID: 2937746999787459357, guid: c10056c524c166c42a3d282572278a1b, type: 3}
       propertyPath: m_Camera
       value: 
@@ -1943,11 +1939,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5d8a67e18d73436a70d9453eaf8e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knifePrefab: {fileID: 1547515170002834066, guid: c8dbd964f743f5934bff4ec67b7faa98, type: 3}
+  knifePrefab: {fileID: 0}
   circlePrefab: {fileID: 5517184805685328822, guid: 899d62d0d94d3f63b8346a198eb6122a, type: 3}
-  stats: {fileID: 1354656649}
-  attack1Cost: 5
-  attack2Cost: 10
 --- !u!114 &1354656649
 MonoBehaviour:
   m_ObjectHideFlags: 0
