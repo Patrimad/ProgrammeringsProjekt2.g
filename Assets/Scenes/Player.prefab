@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 3065616772613841316}
   - component: {fileID: 4744945998280132300}
   - component: {fileID: 1264511164289244192}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -117,8 +117,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4977816357632113276}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -259,10 +259,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5d8a67e18d73436a70d9453eaf8e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knifePrefab: {fileID: 0}
+  knifePrefab: {fileID: 1148004049029896069, guid: 33492058fc54b9f4d85a6a61d3d5ab10, type: 3}
   circlePrefab: {fileID: 5517184805685328822, guid: 899d62d0d94d3f63b8346a198eb6122a, type: 3}
-  stats: {fileID: 0}
-  attack1Cost: 5
+  stats: {fileID: 1264511164289244192}
+  attack1Cost: 0
   attack2Cost: 10
 --- !u!114 &1264511164289244192
 MonoBehaviour:
@@ -284,3 +284,4 @@ MonoBehaviour:
   bloodText: {fileID: 0}
   healthBar: {fileID: 0}
   bloodBar: {fileID: 0}
+  OrbPrefab: {fileID: 0}

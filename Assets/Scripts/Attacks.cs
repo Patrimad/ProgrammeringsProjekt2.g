@@ -5,8 +5,10 @@ public class Attacks : MonoBehaviour
     public GameObject knifePrefab;
     public GameObject circlePrefab;
 
+    public bool isSecondPlayer = false; // NEW: Second player toggle
+
     private GameObject activeKnife;
-    
+
     public Health_Stam stats;
 
     public int attack1Cost = 5;
@@ -14,20 +16,37 @@ public class Attacks : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (isSecondPlayer)
         {
-            Attack attack = new SpikeHand(knifePrefab, transform, this);
-            attack.UseAttack();
-            stats.TakeBlood(attack1Cost);
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                Attack attack = new SpikeHand(knifePrefab, transform, this);
+                attack.UseAttack();
+                stats.TakeBlood(attack1Cost);
+            }
+            else if (Input.GetKeyDown(KeyCode.O))
+            {
+                Attack attack = new Spikes(circlePrefab, transform);
+                attack.UseAttack();
+                stats.TakeBlood(attack2Cost);
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else
         {
-            Attack attack = new Spikes(circlePrefab, transform);
-            attack.UseAttack();
-            stats.TakeBlood(attack2Cost);
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                Attack attack = new SpikeHand(knifePrefab, transform, this);
+                attack.UseAttack();
+                stats.TakeBlood(attack1Cost);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                Attack attack = new Spikes(circlePrefab, transform);
+                attack.UseAttack();
+                stats.TakeBlood(attack2Cost);
+            }
         }
 
-        // Keep knife locked to player
         if (activeKnife != null)
         {
             activeKnife.transform.position = transform.position;
@@ -54,7 +73,6 @@ public class Attacks : MonoBehaviour
 
         protected void StartCooldown()
         {
-            Debug.Log("Starting cooldown for: " + cooldown + " seconds.");
         }
     }
 
@@ -62,7 +80,6 @@ public class Attacks : MonoBehaviour
     {
         public override void UseAttack()
         {
-            Debug.Log("Using melee attack.");
             StartCooldown();
         }
     }
@@ -82,7 +99,6 @@ public class Attacks : MonoBehaviour
 
         public override void UseAttack()
         {
-            Debug.Log("Spawning knife locked to player.");
             GameObject knife = Object.Instantiate(knifePrefab, playerTransform.position, playerTransform.rotation);
             attackController.SetActiveKnife(knife);
             base.UseAttack();
@@ -93,7 +109,6 @@ public class Attacks : MonoBehaviour
     {
         public override void UseAttack()
         {
-            Debug.Log("Using ranged attack.");
             StartCooldown();
         }
     }
@@ -111,13 +126,7 @@ public class Attacks : MonoBehaviour
 
         public override void UseAttack()
         {
-            Debug.Log("Spawning circle at player position.");
             Object.Instantiate(circlePrefab, playerTransform.position, Quaternion.identity);
-
-            // Simulate damage
-            Debug.Log("All characters would lose a life here.");
-            // Example: foreach (var enemy in FindObjectsOfType<Enemy>()) enemy.TakeDamage(damage);
-
             base.UseAttack();
         }
     }

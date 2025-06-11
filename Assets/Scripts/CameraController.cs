@@ -5,7 +5,9 @@ public class CameraController : MonoBehaviour
 {
     private Camera _mainCamera;
 
-    [SerializeField] private List<Transform> targets;
+    [SerializeField] private Transform targetsParent; // Empty GameObject that contains all targets as children
+    private List<Transform> targets = new List<Transform>();
+
     [SerializeField] private float CamBuffer = 5f;
     [SerializeField] private float MinSize = 6f;
     [SerializeField] private float MaxSize = 20f;
@@ -22,6 +24,7 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
+        PopulateTargets();
         hasMultiplePlayers = targets.Count > 1;
 
         if (targets.Count > 0)
@@ -33,12 +36,27 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
+        // Repopulate the list in case children have changed (optional)
+        PopulateTargets();
         hasMultiplePlayers = targets.Count > 1;
 
         if (targets.Count > 0)
         {
             SetPosition();
             SetSize();
+        }
+    }
+
+    private void PopulateTargets()
+    {
+        targets.Clear();
+
+        if (targetsParent == null)
+            return;
+
+        foreach (Transform child in targetsParent)
+        {
+            targets.Add(child);
         }
     }
 
@@ -69,18 +87,12 @@ public class CameraController : MonoBehaviour
         }
 
         averagePosition /= targets.Count;
-        //averagePosition.y = transform.position.y;
-        //averagePosition.z = transform.position.z;
-
         return averagePosition;
     }
 
     private float GetDesiredSize()
     {
-        if (targets.Count == 0)
-            return MinSize;
-
-        if (targets.Count == 1)
+        if (targets.Count <= 1)
             return MinSize;
 
         float size = 0f;

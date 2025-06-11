@@ -28,26 +28,27 @@ public class EnemyNavAI : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (player != null && Vector3.Distance(transform.position, player.position) <= detectionRadius)
+        Transform closestPlayer = GetClosestPlayer();
+
+        if (closestPlayer != null && Vector3.Distance(transform.position, closestPlayer.position) <= detectionRadius)
         {
-            // Spilleren er indenfor radius, så start jagten.
+            // Start chasing the closest player within range
             chasingPlayer = true;
             agent.speed = chaseSpeed;
-            Vector3 directionToPlayer = player.position - transform.position;
+            Vector3 directionToPlayer = closestPlayer.position - transform.position;
             if (directionToPlayer.magnitude > stopDistance)
             {
-                agent.SetDestination(player.position);
+                agent.SetDestination(closestPlayer.position);
             }
             else
             {
-                agent.ResetPath(); // Stop bevægelsen, når vi er tæt nok på
+                agent.ResetPath();
             }
         }
         else
         {
             if (chasingPlayer)
             {
-                // Stop jagten og vend tilbage til patrulje.
                 chasingPlayer = false;
                 agent.speed = patrolSpeed;
                 agent.SetDestination(patrolPoints[currentPatrolIndex].position);
@@ -74,4 +75,24 @@ public class EnemyNavAI : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
+
+    Transform GetClosestPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        Transform closest = null;
+        float shortestDistance = Mathf.Infinity;
+
+        foreach (GameObject p in players)
+        {
+            float distance = Vector3.Distance(transform.position, p.transform.position);
+            if (distance < shortestDistance)
+            {
+                shortestDistance = distance;
+                closest = p.transform;
+            }
+        }
+
+        return closest;
+    }
+
 }

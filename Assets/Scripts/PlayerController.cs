@@ -9,18 +9,20 @@ public class PlayerController : MonoBehaviour
     public float dashDuration = 0.2f;
     public float dashCooldown = 1f;
     public int dashBloodCost = 10;
+    public float rotationSpeed = 10f;
+
+    public bool isSecondPlayer = false; // NEW: Second player toggle
 
     private float lastDashTime;
     private float dashTimeRemaining;
     private bool isDashing;
     private Vector3 dashDirection;
-    public float rotationSpeed = 10f;
 
     private Vector3 _input;
     private Rigidbody rb;
 
     public Health_Stam stats;
-    
+
     private bool isControlHeld;
 
     private void Awake()
@@ -43,19 +45,46 @@ public class PlayerController : MonoBehaviour
 
     private void GatherInput()
     {
-        Vector2 input = Keyboard.current != null ? new Vector2(
-            (Keyboard.current.dKey.isPressed ? 1 : 0) - (Keyboard.current.aKey.isPressed ? 1 : 0),
-            (Keyboard.current.wKey.isPressed ? 1 : 0) - (Keyboard.current.sKey.isPressed ? 1 : 0)
-        ).normalized : Vector2.zero;
+        if (Keyboard.current == null)
+        {
+            _input = Vector3.zero;
+            isControlHeld = false;
+            return;
+        }
 
-        _input = new Vector3(input.x, 0, input.y);
-        
-        isControlHeld = Keyboard.current != null && Keyboard.current.leftShiftKey.isPressed;
+        Vector2 input;
+
+        if (!isSecondPlayer)
+        {
+            input = new Vector2(
+                (Keyboard.current.dKey.isPressed ? 1 : 0) - (Keyboard.current.aKey.isPressed ? 1 : 0),
+                (Keyboard.current.wKey.isPressed ? 1 : 0) - (Keyboard.current.sKey.isPressed ? 1 : 0)
+            );
+
+            isControlHeld = Keyboard.current.leftShiftKey.isPressed;
+        }
+        else
+        {
+            input = new Vector2(
+                (Keyboard.current.rightArrowKey.isPressed ? 1 : 0) - (Keyboard.current.leftArrowKey.isPressed ? 1 : 0),
+                (Keyboard.current.upArrowKey.isPressed ? 1 : 0) - (Keyboard.current.downArrowKey.isPressed ? 1 : 0)
+            );
+
+            isControlHeld = Keyboard.current.kKey.isPressed;
+        }
+
+        _input = new Vector3(input.x, 0, input.y).normalized;
     }
 
     private void TryDash()
     {
-        if (Keyboard.current.spaceKey.wasPressedThisFrame &&
+        if (Keyboard.current == null) return;
+
+        bool dashKeyPressed = isSecondPlayer
+            ? Keyboard.current.lKey.wasPressedThisFrame
+            : Keyboard.current.spaceKey.wasPressedThisFrame;
+
+        if (dashKeyPressed &&
             Time.time >= lastDashTime + dashCooldown &&
             _input != Vector3.zero &&
             stats.currentBlood >= dashBloodCost &&
@@ -100,7 +129,6 @@ public class PlayerController : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(rotatedInput, Vector3.up);
         rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
     }
-
 
     private void OnCollisionEnter(Collision collision)
     {
